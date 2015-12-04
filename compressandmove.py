@@ -42,3 +42,40 @@ import argparse
 import errno
 import os
 
+
+# global variables
+_SCRIPT_VERSION = '0.0.0'
+
+
+def main():
+    """Main function
+    Parameters:
+        None
+    Returns:
+        Nothing
+    Raises:
+        ValueError for invalid arguments
+    """
+    # get args
+    args = parseargs()
+
+    # check parameters
+
+
+def parseargs():  # pragma: no cover
+    """Sets up command-line arguments and parser
+    Parameters:
+        Nothing
+    Returns:
+        Parsed arguments
+    Raises:
+        Nothing
+    """
+    parser = argparse.ArgumentParser(description='Compress and move folders')
+    parser.add_argument("-v", "--version", help="show program's version number and exit", action='version', version=_SCRIPT_VERSION)
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+    main()
+
