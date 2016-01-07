@@ -44,7 +44,7 @@ import os
 
 
 # global variables
-_SCRIPT_VERSION = '0.0.0'
+_SCRIPT_VERSION = '0.0.1'
 
 
 def main():
