@@ -60,6 +60,16 @@ def main():
     args = parseargs()
 
     # check parameters
+    if len(args.localresource) < 1 or len(args.storageaccount) < 1 or \
+            len(args.container) < 1:
+        raise ValueError('invalid positional arguments')
+    if args.upload and args.download:
+        raise ValueError('cannot force transfer direction of download '
+                         'and upload in the same command')
+    if args.storageaccountkey is not None and args.saskey is not None:
+        raise ValueError('cannot use both a sas key and storage account key')
+    if args.pageblob and args.autovhd:
+        raise ValueError('cannot specify both pageblob and autovhd parameters')
 
 
 def parseargs():  # pragma: no cover
@@ -73,6 +83,8 @@ def parseargs():  # pragma: no cover
     """
     parser = argparse.ArgumentParser(description='Compress and move folders')
     parser.add_argument("-v", "--version", help="show program's version number and exit", action='version', version=_SCRIPT_VERSION)
+    parser.add_argument("-f", "--folder", help='specify the folder to compress')
+    parser.add_argument("-d", "--delete", help='delete folder at the end')
     return parser.parse_args()
 
 
