@@ -42,11 +42,11 @@ import argparse
 import errno
 import os
 import tarfile
+import shutil
 
 
 # global variables
 _SCRIPT_VERSION = '0.0.1'
-_DEST_TAR_PATH = /tmp
 
 
 def main():
@@ -63,9 +63,19 @@ def main():
 
     # check parameters
     if os.path.isdir(args.folder) is not True:
-        raise ValueError('Invalid directory')
+        raise ValueError('Invalid folder directory')
+    if os.path.isdir(args.destination) is not True:
+        raise ValueError('Invalid destination directory')
 
-    os.chdir(_DEST_TAR_PATH)
+    # base_name = ''.join([args.folder, args.destination])
+    os.chdir(args.destination)
+    shutil.make_archive(args.folder, 'gztar', args.folder)
+
+
+
+
+
+
 
 
 def parseargs():  # pragma: no cover
@@ -78,8 +88,9 @@ def parseargs():  # pragma: no cover
         Nothing
     """
     parser = argparse.ArgumentParser(description='Compress and move folders')
-    parser.add_argument("-f", "--folder", required=True, help='specify the folder to compress')
-    parser.add_argument("-d", "--delete", help='delete folder at the end')
+    parser.add_argument("--folder", required=True, help='specify the folder to compress')
+    parser.add_argument("--destination", required=True, help='specify the folder to store the compressed folder')
+    parser.add_argument("--delete", help='delete folder at the end')
     parser.add_argument("-v", "--version", help="show program's version number and exit", action='version', version=_SCRIPT_VERSION)
     return parser.parse_args()
 
