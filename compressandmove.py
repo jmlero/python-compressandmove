@@ -41,10 +41,12 @@ TODO list:
 import argparse
 import errno
 import os
+import tarfile
 
 
 # global variables
 _SCRIPT_VERSION = '0.0.1'
+_DEST_TAR_PATH = /tmp
 
 
 def main():
@@ -61,11 +63,9 @@ def main():
 
     # check parameters
     if os.path.isdir(args.folder) is not True:
-        raise ValueError('Invalidad directory')
+        raise ValueError('Invalid directory')
 
-
-
-
+    os.chdir(_DEST_TAR_PATH)
 
 
 def parseargs():  # pragma: no cover
