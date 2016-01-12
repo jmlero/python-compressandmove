@@ -33,7 +33,9 @@ Notes:
 - Insert notes
 
 TODO list:
-- TODO
+- Check if / at the end of --folder
+- Add delete option
+
 """
 
 
@@ -43,10 +45,25 @@ import errno
 import os
 import tarfile
 import shutil
+import string
 
 
 # global variables
-_SCRIPT_VERSION = '0.0.1'
+_SCRIPT_VERSION = '0.0.2'
+
+
+def make_tarfile(output_filename, source_dir):
+    """Create tarfile gz
+    Parameters:
+        output_filename
+        source_dir
+    Returns:
+        Nothing
+    Raises:
+        Nothing
+    """
+    with tarfile.open(output_filename, "w:gz") as tar:
+        tar.add(source_dir, arcname=os.path.basename(source_dir))
 
 
 def main():
@@ -67,15 +84,14 @@ def main():
     if os.path.isdir(args.destination) is not True:
         raise ValueError('Invalid destination directory')
 
-    # base_name = ''.join([args.folder, args.destination])
+    # Eliminate / at the end of the folder path
+
+    # Change to destination folder
     os.chdir(args.destination)
-    shutil.make_archive(args.folder, 'gztar', args.folder)
-
-
-
-
-
-
+    # Extract folder name
+    folder_basename = os.path.basename(args.folder)
+    # Create tar.gz
+    make_tarfile(folder_basename + ".tar.gz", args.folder)
 
 
 def parseargs():  # pragma: no cover
