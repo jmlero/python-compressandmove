@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# file.py Code
+# compressandmove.py Code
 #
 # Copyright (c) Jose M. Molero
 #
@@ -27,13 +27,12 @@
 # DEALINGS IN THE SOFTWARE.
 
 """
-Code sample to
+Code sample to compress and move folders
 
 Notes:
-- Insert notes
+-
 
 TODO list:
-- Check if / at the end of --folder
 - Add delete option
 
 """
@@ -41,15 +40,15 @@ TODO list:
 
 # stdlib imports
 import argparse
-import errno
 import os
 import tarfile
 import shutil
-import string
+# import errno
+# import string
 
 
 # global variables
-_SCRIPT_VERSION = '0.0.2'
+_SCRIPT_VERSION = '1.0'
 
 
 def make_tarfile(output_filename, source_dir):
@@ -69,9 +68,7 @@ def make_tarfile(output_filename, source_dir):
 def main():
     """Main function
     Parameters:
-        None
     Returns:
-        Nothing
     Raises:
         ValueError for invalid arguments
     """
@@ -79,34 +76,34 @@ def main():
     args = parseargs()
 
     # check parameters
-    if os.path.isdir(args.folder) is not True:
-        raise ValueError('Invalid folder directory')
+    # if os.path.isdir(args.folder) is not True:
+    #    raise ValueError('Invalid folder directory')
     if os.path.isdir(args.destination) is not True:
         raise ValueError('Invalid destination directory')
 
-    # Eliminate / at the end of the folder path
-
-    # Change to destination folder
-    os.chdir(args.destination)
-    # Extract folder name
-    folder_basename = os.path.basename(args.folder)
-    # Create tar.gz
-    make_tarfile(folder_basename + ".tar.gz", args.folder)
+    if os.path.isdir(args.folder) is True:
+        # Eliminate / at the end of the folder path
+        if args.folder[-1] is "/":
+            args.folder = args.folder[:-1]
+        # Change to destination folder
+        os.chdir(args.destination)
+        # Extract folder name and create tar.gz
+        make_tarfile(os.path.basename(args.folder) + ".tar.gz", args.folder)
+        # delete the folder if flag deleted is true
+        if args.delete:
+            shutil.rmtree(args.folder, ignore_errors=True)
 
 
 def parseargs():  # pragma: no cover
     """Sets up command-line arguments and parser
     Parameters:
-        Nothing
     Returns:
-        Parsed arguments
     Raises:
-        Nothing
     """
     parser = argparse.ArgumentParser(description='Compress and move folders')
     parser.add_argument("--folder", required=True, help='specify the folder to compress')
     parser.add_argument("--destination", required=True, help='specify the folder to store the compressed folder')
-    parser.add_argument("--delete", help='delete folder at the end')
+    parser.add_argument("--delete", action="store_true", help='delete folder after compress')
     parser.add_argument("-v", "--version", help="show program's version number and exit", action='version', version=_SCRIPT_VERSION)
     return parser.parse_args()
 
