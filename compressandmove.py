@@ -33,8 +33,6 @@ Notes:
 -
 
 TODO list:
-- Add delete option
-
 """
 
 
